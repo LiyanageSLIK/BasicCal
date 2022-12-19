@@ -25,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
     public void writeToTextView(Float answer){
 
         try {
-
+            if(answer.equals(Float.valueOf("Infinity"))){
+                currentTextView.setText(String.valueOf(answer));
+                error=true;
+            }
             if(answer.intValue()==answer){
                 currentTextView.setText(String.valueOf(answer.intValue()));
             }else{
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public void functionKeyPress(View view){
         currentTextView= findViewById(R.id.textView);
         currentText =currentTextView.getText().toString();
-
+        if(currentText.equals("Infinity")){clear();}else {
             switch (view.getId()){
                 case R.id.btn_clear:
                     clear();
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                     break;
 
-            }
+            }}
     }
 
     public Float cal(Float n1, Float n2) {
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     public void mathKeyPress(View view){
         currentTextView= findViewById(R.id.textView);
         currentText =currentTextView.getText().toString();
-
+        if(currentText.equals("Infinity")){clear();}else {
             switch (view.getId()){
 
                 case R.id.btn_multiply:
@@ -154,14 +157,14 @@ public class MainActivity extends AppCompatActivity {
                     writeToTextView(answer);
                     break;
 
-            }
+            }}
 
     }
 
     public void numberKeyPress(View view){
         currentTextView= findViewById(R.id.textView);
         currentText =currentTextView.getText().toString();
-
+        if(currentText.equals("Infinity")){clear();}else {
             switch (view.getId()){
                 case R.id.btn_0:
                     if (!currentText.equals("0")&&!operatorClicked&&!equalClicked){
@@ -201,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                     equalClicked=false;
                     break;
 
-            }
+            }}
     }
 
 
