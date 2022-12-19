@@ -9,10 +9,10 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
 
-
+    volatile String mathOperator=null;
+    volatile Float answer=null;
     TextView currentTextView ;
     volatile String  currentText;
-   
 
 
 
@@ -20,7 +20,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    public Float cal(Float n1, Float n2) {
+        if (mathOperator != null) {
+            switch (String.valueOf(mathOperator)) {
+                case "+":
+                    return n1 + n2;
+                case "-":
+                    return n1 - n2;
+                case "*":
+                    return n1 * n2;
+                case "/":
+                    return n1 / n2;
+            }
+        }return answer;
+    }
 
 
 
