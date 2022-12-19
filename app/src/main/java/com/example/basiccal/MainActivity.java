@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
-
-
+    volatile Boolean operatorClicked=false;
+    volatile Boolean equalClicked=false;
     volatile String mathOperator=null;
     volatile Float answer=null;
     volatile Float operand_1=null;
@@ -25,10 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public void writeToTextView(Float answer){
 
         try {
-            if(answer.equals(Float.valueOf("Infinity"))){
-                currentTextView.setText(String.valueOf(answer));
-                error=true;
-            }
+
             if(answer.intValue()==answer){
                 currentTextView.setText(String.valueOf(answer.intValue()));
             }else{
@@ -44,10 +41,34 @@ public class MainActivity extends AppCompatActivity {
         this.mathOperator=null;
         this.operand_1=null;
         this.answer=null;
+        this.operatorClicked=false;
+        this.equalClicked=false;
         this.currentText=null;
     }
 
+    public void functionKeyPress(View view){
+        currentTextView= findViewById(R.id.textView);
+        currentText =currentTextView.getText().toString();
 
+            switch (view.getId()){
+                case R.id.btn_clear:
+                    clear();
+                    break;
+                case R.id.btn_backspace:
+                    if (currentText.equals("0")||currentText.equals("-")||currentText.length()==1){
+                        currentTextView.setText("0");
+                    }
+                    else {
+                        currentTextView.setText(currentText.substring(0,(currentText.length()-1)));
+                    }
+                    break;
+                case R.id.btn_history:
+
+
+                    break;
+
+            }
+    }
 
     public Float cal(Float n1, Float n2) {
         if (mathOperator != null) {
@@ -64,7 +85,78 @@ public class MainActivity extends AppCompatActivity {
         }return answer;
     }
 
+    public void mathKeyPress(View view){
+        currentTextView= findViewById(R.id.textView);
+        currentText =currentTextView.getText().toString();
 
+            switch (view.getId()){
+
+                case R.id.btn_multiply:
+                    if(!operatorClicked&&!equalClicked&&answer!=null){
+                        answer=cal(answer,Float.valueOf(currentText));
+                    }else{
+                        answer=Float.valueOf(currentText);
+                    }
+                    mathOperator="*";
+                    operatorClicked=true;
+                    equalClicked=false;
+                    writeToTextView(answer);
+                    break;
+                case R.id.btn_divide:
+                    if(!operatorClicked&&!equalClicked&&answer!=null){
+                        answer=cal(answer,Float.valueOf(currentText));
+                    }else{
+                        answer=Float.valueOf(currentText);
+                    }
+                    mathOperator="/";
+                    operatorClicked=true;
+                    equalClicked=false;
+                    writeToTextView(answer);
+
+                    break;
+                case R.id.btn_plus:
+                    if(!operatorClicked&&!equalClicked&&answer!=null){
+                        answer=cal(answer,Float.valueOf(currentText));
+                    }else{
+                        answer=Float.valueOf(currentText);
+                    }
+                    mathOperator="+";
+                    operatorClicked=true;
+                    equalClicked=false;
+                    writeToTextView(answer);
+                    break;
+                case R.id.btn_minus:
+                    if(!operatorClicked&&!equalClicked&&answer!=null){
+                        answer=cal(answer,Float.valueOf(currentText));
+                    }else{
+                        answer=Float.valueOf(currentText);
+                    }
+                    mathOperator="-";
+                    operatorClicked=true;
+                    equalClicked=false;
+                    writeToTextView(answer);
+                    break;
+                case R.id.btn_equal:
+                    if(answer==null&&!operatorClicked){
+                        answer= Float.valueOf(currentText);
+                    }
+                    if(!operatorClicked&&!equalClicked){
+                        operand_1=Float.valueOf(currentText);
+                        operatorClicked=false;
+                    }
+                    if (!equalClicked){
+                        answer=cal(answer,Float.valueOf(currentText));
+                    }else{
+
+                        answer=cal(answer,operand_1);
+                    }
+                    equalClicked=true;
+                    writeToTextView(answer);
+                    break;
+
+            }
+
+    }
 
     public void numberKeyPress(View view){
         currentTextView= findViewById(R.id.textView);
@@ -72,10 +164,11 @@ public class MainActivity extends AppCompatActivity {
 
             switch (view.getId()){
                 case R.id.btn_0:
-                    if (!currentText.equals("0")){
+                    if (!currentText.equals("0")&&!operatorClicked&&!equalClicked){
                         currentTextView.append("0");
                     }else {currentTextView.setText("0");}
-
+                    operatorClicked=false;
+                    equalClicked=false;
                     break;
                 case R.id.btn_plusminus:
                     if (Float.valueOf(currentText)>0){
@@ -84,22 +177,28 @@ public class MainActivity extends AppCompatActivity {
                     if (Float.valueOf(currentText)<0){
                         currentTextView.setText(currentText.substring(1));
                     }
-
+                    operatorClicked=false;
+                    equalClicked=false;
                     break;
                 case R.id.btn_dot:
-                    if(!currentText.contains(".")) {
+                    if(!equalClicked&&!operatorClicked&&!currentText.contains(".")) {
                         currentTextView.append(".");
                     }
-
+                    if(operatorClicked||equalClicked) {
+                        currentTextView.setText("0.");
+                    }
+                    operatorClicked=false;
+                    equalClicked=false;
                     break;
                 default:
-                    if (currentText.equals("0")){
+                    if (currentText.equals("0")||operatorClicked||equalClicked){
                         currentTextView.setText(view.getTag().toString());
                     }
                     else {
                         currentTextView.append(view.getTag().toString());
                     }
-
+                    operatorClicked=false;
+                    equalClicked=false;
                     break;
 
             }
