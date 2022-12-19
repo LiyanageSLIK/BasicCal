@@ -16,7 +16,11 @@ public class MainActivity extends AppCompatActivity {
     volatile String  currentText;
     volatile boolean error=false;
 
-
+    public void sleep(Long mili){
+        try{
+            Thread.sleep(mili);
+        }catch (Exception e){}
+    }
 
     public void writeToTextView(Float answer){
 
@@ -35,7 +39,13 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e){currentTextView.setText(String.valueOf(answer));}
     }
 
-
+    public void clear(){
+        this.currentTextView.setText("0");
+        this.mathOperator=null;
+        this.operand_1=null;
+        this.answer=null;
+        this.currentText=null;
+    }
 
 
 
@@ -80,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                     if(!currentText.contains(".")) {
                         currentTextView.append(".");
                     }
-
 
                     break;
                 default:
