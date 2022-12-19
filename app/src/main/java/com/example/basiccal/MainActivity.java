@@ -11,10 +11,26 @@ public class MainActivity extends AppCompatActivity {
 
     volatile String mathOperator=null;
     volatile Float answer=null;
+    volatile Float operand_1=null;
     TextView currentTextView ;
     volatile String  currentText;
+    volatile boolean error=false;
 
 
+
+    public void writeToTextView(Float answer){
+
+        try {
+
+            if(answer.intValue()==answer){
+                currentTextView.setText(String.valueOf(answer.intValue()));
+            }else{
+                currentTextView.setText(String.valueOf(answer));
+            }
+
+
+        } catch (Exception e){currentTextView.setText(String.valueOf(answer));}
+    }
 
 
 
@@ -58,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
                     break;
                 case R.id.btn_dot:
-                    if(currentText.contains(".")) {
+                    if(!currentText.contains(".")) {
                         currentTextView.append(".");
                     }
+
 
                     break;
                 default:
