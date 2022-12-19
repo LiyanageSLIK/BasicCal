@@ -21,7 +21,10 @@ public class MainActivity extends AppCompatActivity {
     public void writeToTextView(Float answer){
 
         try {
-
+            if(answer.equals(Float.valueOf("Infinity"))){
+                currentTextView.setText(String.valueOf(answer));
+                error=true;
+            }
             if(answer.intValue()==answer){
                 currentTextView.setText(String.valueOf(answer.intValue()));
             }else{
